@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class FileReader {
-    public static String readFile(String fileName) {
+    public static String readFile(String filePath) {
+        String fileName = "./src/day/" + filePath;
         Scanner s = null;
 
         try {

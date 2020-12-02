@@ -25,7 +25,7 @@ public class Main {
     public static int[] getInputData() {
         String inputData;
 
-        inputData = FileReader.readFile("./src/day/one/input.txt");
+        inputData = FileReader.readFile("one/input.txt");
 
         String[] inputStringArray = inputData.split("\n");
         int[] inputArray = new int[inputStringArray.length];
