@@ -3,6 +3,7 @@ import AOCUtil.*;
 
 import javax.lang.model.type.ArrayType;
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,34 +24,38 @@ public class Main {
             }
         }
 
-        int stepX = 3;
+        int stepX = 1;
         int stepY = 1;
-        int x = 0, y = 0, numTrees = 0;
+        int[] numTrees = new int[5];
 
-        while (y + stepY < inputStringArray.length) {
+        for (int i = 0; i < 5; i++) {
+            numTrees[i] = getEncounteredTrees(treeMap, stepX, stepY, width, inputStringArray.length);
+
+            if (i != 3) {
+                stepX += 2;
+            } else {
+                stepX = 1;
+                stepY += 1;
+            }
+        }
+
+        long prodTrees = (long) numTrees[0] * numTrees[1] * numTrees[2] * numTrees[3] * numTrees[4];
+        System.out.println(prodTrees);
+    }
+    
+    public static int getEncounteredTrees(Integer[] treeMap, int stepX, int stepY, int width, int height) {
+        int x = 0, y = 0, numTrees = 0;
+        while (y + stepY < height) {
             x += stepX;
             y += stepY;
             if (x >= width) x = x - width;
 
-            StringBuilder sb = new StringBuilder(inputStringArray[y]);
             if (treeMap[xyToIndex(x, y, width)] == 1) {
                 numTrees++;
-                sb.setCharAt(x, 'X');
-                inputStringArray[y] = sb.toString();
-            } else {
-                sb.setCharAt(x, 'O');
-                inputStringArray[y] = sb.toString();
             }
         }
-
-        printInputStringArray(inputStringArray);
-        System.out.println(numTrees);
-    }
-
-    public static void printInputStringArray(String[] a) {
-        for (String s : a) {
-            System.out.println(s);
-        }
+        
+        return numTrees;
     }
 
     public static int xyToIndex(int x, int y, int width) {
