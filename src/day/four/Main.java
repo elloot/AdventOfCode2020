@@ -19,29 +19,125 @@ public class Main {
 
         mapPassports(separatedPassports, passports);
 
-        System.out.println(numValidPassports(passports));
+        int numValidPassports = 0;
+
+        for (HashMap passport : passports) {
+            if (passesInitialValidation(passport) && isValid(passport)) {
+                numValidPassports++;
+            }
+        }
+
+        System.out.println(numValidPassports);
     }
 
-    private static int numValidPassports(HashMap[] passports) {
-        int numValidPassports = 0;
-        for (HashMap currentPassport : passports) {
-            if (currentPassport.containsKey("byr")) {
-                if (currentPassport.containsKey("iyr")) {
-                    if (currentPassport.containsKey("eyr")) {
-                        if (currentPassport.containsKey("hgt")) {
-                            if (currentPassport.containsKey("hcl")) {
-                                if (currentPassport.containsKey("ecl")) {
-                                    if (currentPassport.containsKey("pid")) {
-                                        numValidPassports++;
-                                    }
-                                }
+    private static boolean isValid(HashMap passport) {
+        String byr = passport.get("byr").toString(), iyr = passport.get("iyr").toString(), eyr = passport.get("eyr").toString(), hgt = passport.get("hgt").toString(), hcl = passport.get("hcl").toString(), ecl = passport.get("ecl").toString(), pid = passport.get("pid").toString();
+
+        return hasValidByr(byr) && hasValidIyr(iyr) && hasValidEyr(eyr) && hasValidHgt(hgt) && hasValidHcl(hcl) && hasValidEcl(ecl) && hasValidPid(pid);
+    }
+
+    private static boolean hasValidPid(String pid) {
+        for (int i = 0; i < pid.length(); i++) {
+            if (!Character.isDigit(pid.charAt(i))) {
+                return false;
+            }
+        }
+
+        return pid.length() == 9;
+    }
+
+    private static boolean hasValidEcl(String ecl) {
+        String[] allowedValues = {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"};
+
+        for (String allowedValue : allowedValues) {
+            if (ecl.equals(allowedValue)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean hasValidHcl(String hcl) {
+        char firstChar = hcl.charAt(0);
+
+        if (firstChar != '#') {
+            return false;
+        }
+
+        try {
+            Integer.parseInt(hcl.substring(1), 16);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private static boolean hasValidHgt(String hgt) {
+        String unit = hgt.substring(hgt.length() - 2);
+        int height;
+
+        try {
+            height = Integer.parseInt(hgt.substring(0, hgt.length() - 2));
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        if (unit.equals("cm")) {
+            return height >= 150 && height <= 193;
+        } else if (unit.equals("in")) {
+            return height >= 59 && height <= 76;
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean hasValidEyr(String eyr) {
+        int expirationYear;
+
+        try {
+            expirationYear = Integer.parseInt(eyr);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return expirationYear >= 2020 && expirationYear <= 2030;
+    }
+
+    private static boolean hasValidIyr(String iyr) {
+        int issueYear;
+        try {
+            issueYear = Integer.parseInt(iyr);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return issueYear >= 2010 && issueYear <= 2020;
+    }
+
+    private static boolean hasValidByr(String byr) {
+        int birthYear;
+        try {
+            birthYear = Integer.parseInt(byr);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return birthYear >= 1920 && birthYear <= 2002;
+    }
+
+    private static boolean passesInitialValidation(HashMap passport) {
+        if (passport.containsKey("byr")) {
+            if (passport.containsKey("iyr")) {
+                if (passport.containsKey("eyr")) {
+                    if (passport.containsKey("hgt")) {
+                        if (passport.containsKey("hcl")) {
+                            if (passport.containsKey("ecl")) {
+                                return passport.containsKey("pid");
                             }
                         }
                     }
                 }
             }
         }
-        return numValidPassports;
+        return false;
     }
 
     private static void mapPassports(ArrayList<String> separatedPassports, HashMap[] passports) {
