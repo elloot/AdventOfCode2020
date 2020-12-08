@@ -19,7 +19,6 @@ public class Main {
         String ogRegex = "([0-9][^,.]*)";
         String inputString = FileReader.readFile("seven/input.txt");
         String[] inputLines = inputString.split("\n");
-        ArrayList<String> bagsDirectlyContainingShinyGold = new ArrayList<>();
 
         Timer timer = new Timer();
         timer.start();
@@ -52,9 +51,5 @@ public class Main {
                 howManyBagsContain(new Bag(bagContaining, true), inputLines);
             }
         }
-    }
-
-    public void addBag(Bag b) {
-        this.bagsContainingShinyGold.add(b);
     }
 }
