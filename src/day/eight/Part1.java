@@ -24,13 +24,17 @@ public class Part1 {
         }
         String op = instructions[index].substring(0, 3);
         int arg = Integer.parseInt(instructions[index].substring(4));
-        if (op.equals("acc")) {
-            acc += arg;
-            executeOpAt(index + 1);
-        } else if (op.equals("jmp")) {
-            executeOpAt(index + arg);
-        } else if (op.equals("nop")) {
-            executeOpAt(index + 1);
+        switch (op) {
+            case "acc":
+                acc += arg;
+                executeOpAt(index + 1);
+                break;
+            case "jmp":
+                executeOpAt(index + arg);
+                break;
+            case "nop":
+                executeOpAt(index + 1);
+                break;
         }
     }
 }
