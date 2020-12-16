@@ -2,8 +2,6 @@ package day.fifteen;
 
 import AOCUtil.Timer;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,15 +48,4 @@ public class Part1 {
             }
         }
     }
-
-        private static boolean contains ( int num, ArrayList<Integer > numbers){
-            boolean contains = false;
-            for (int i = 0; i < numbers.size() - 1; i++) {
-                if (num == numbers.get(i)) {
-                    contains = true;
-                    break;
-                }
-            }
-            return contains;
-        }
-    }
+}
